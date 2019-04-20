@@ -9,29 +9,33 @@ import Grid from "@material-ui/core/Grid";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
+import axios from 'axios';
+import socketIo from 'socket.io-client';
 
-let id = 0;
-function createData(name, problem, status) {
-    id += 1;
-
-    return { id, name, problem, status };
-}
-
-const rows = [
-    createData('🙍‍♂️ Ionel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
-];
-
+import { apiUrl } from './config';
 class Dashboard extends React.Component {
+
+    state = {
+        rows: [],
+        socket: null,
+    };
+
+    async componentDidMount() {
+        this.getPatients();
+        const socket = socketIo(`${apiUrl}/psychologist`);
+        socket.on('patientsChanged', this.getPatients);
+        this.setState({ socket });
+    }
+
+    getPatients = async () => {
+        const response = await axios.get(`${apiUrl}/api/patient`);
+        const rows = response.data.map((patient) => ({
+            ...patient,
+            status: 'In asteptare',
+        }));
+        this.setState({ rows });
+    }
+
     render() {
         return (
             <div>
@@ -43,7 +47,7 @@ class Dashboard extends React.Component {
                     justify="center"
                 >
                     <Table>
-                        {rows}
+                        {this.state.rows}
                     </Table>
 
                 </Grid>
