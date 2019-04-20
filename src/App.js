@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Button from '@material-ui/core/Button';
 import './App.css';
 
 class App extends Component {
@@ -20,7 +21,11 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <Button variant="contained" color="primary">
+          Hello World
+        </Button>
       </div>
+
     );
   }
 }
