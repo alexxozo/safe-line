@@ -15,7 +15,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import { red } from '@material-ui/core/colors';
+import Joyride from 'react-joyride';
 
 const styles = theme => ({
     main: {
@@ -55,6 +55,82 @@ class SignIn extends React.Component {
     state = {
         problem: 'Depresie',
         name: 'problem',
+        run: true,
+        steps: [
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>😁</h1>
+                        <h1>Salut!</h1>
+                    </div>
+                ),
+            },
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>🤦‍</h1>
+                        <h2>Simti nevoia sa vorbesti cu cineva despre problemele tale?</h2>
+                    </div>
+                ),
+            },
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>💯</h1>
+                        <h2>"Vorbeste cu un psiholog" este primul serviciu roman de asistenta medicala online!</h2>
+                    </div>
+                ),
+            },
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>👩‍⚕</h1>
+                        <h2>Psihologi acreditati si voluntari experimentati te vor ajuta sa treci peste problemele care te apasa.</h2>
+                    </div>
+                ),
+            },
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>🔏 </h1>
+                        <h2>Intreaga conversatie va fi confidentiala si nu vom folosi deloc datele tale personale!</h2>
+                    </div>
+                ),
+            },
+            {
+                placement: 'center',
+                target: '.hello',
+                content: (
+                    <div>
+                        <h1 style={{
+                            fontSize: "100px"
+                        }}>🤝</h1>
+                        <h1>Este simplu</h1>
+                        <h2>Introdu datele ce ne vor ajuta sa te conectam cu un psiholog iar apoi apasa butonul rosu!</h2>
+                    </div>
+                ),
+            },
+        ]
     };
 
     handleChange = event => {
@@ -63,18 +139,28 @@ class SignIn extends React.Component {
 
     render() {
         const { classes } = this.props;
+        const { steps, run } = this.state;
+
         return (
             <main className={classes.main}>
+                <Joyride
+                    continuous
+                    run={run}
+                    scrollToFirstStep
+                    showProgress
+                    showSkipButton
+                    steps={steps}
+                />
                 <CssBaseline />
                 <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LocalHospital />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography className="hello" component="h1" variant="h5">
                         Safe-Line
                     </Typography>
                     <form className={classes.form}>
-                        <FormControl margin="normal" required fullWidth>
+                        <FormControl className="info" margin="normal" required fullWidth>
                             <InputLabel htmlFor="name">Nume</InputLabel>
                             <Input id="name" name="name" autoComplete="name" autoFocus />
                         </FormControl>

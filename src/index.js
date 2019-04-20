@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import SignIn from './SignIn.js';
 import Admin from './Admin.js';
+import Chat from './Chat.js';
 
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Switch>
             <Route path="/signin" component={SignIn} />
             <Route path="/admin" component={Admin} />
+            <Route path="/chat" component={Chat} />
             <Redirect from="/" to="/signin" />
         </Switch>
     </Router>,
