@@ -5,14 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 
-function rand() {
-  return 0;
-  //return Math.round(Math.random() * 20) - 10;
-}
-
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50;
+  const left = 50;
 
   return {
     top: `${top}%`,
@@ -50,7 +45,7 @@ class SimpleModal extends React.Component {
 
     return (
       <div>
-        <Button variant="contained" color="secondary" onClick={this.handleOpen} className={classes.button}>
+        <Button variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} onClick={this.handleOpen} className={classes.button}>
           Descriere
         </Button>
         <Modal
