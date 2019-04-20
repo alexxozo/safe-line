@@ -13,7 +13,8 @@ export default class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      inputText: '',
+      messages: [],
     };
   }
 
@@ -151,10 +152,22 @@ export default class MessageList extends Component {
   }
 
   addMessage = (event) => {
-    console.log(event.target.parent);
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        messages: [...prevState.messages, "a"]
+      }
+    });
+  };
+
+  updateInput = (event) => {
+    this.setState({
+      inputText: event.target.value,
+    });
   }
 
   render() {
+    const { inputText } = this.state;
     return (
       <div className="message-list">
         <Toolbar
@@ -167,7 +180,7 @@ export default class MessageList extends Component {
 
         <div className="message-list-container">{this.renderMessages()}</div>
 
-        <Compose rightItems={[
+        <Compose text={this.state.inputText} onInputChange={this.updateInput} rightItems={[
           <ToolbarButton onClick={this.addMessage} key="send" icon="ion-ios-send" />
         ]} />
       </div>
