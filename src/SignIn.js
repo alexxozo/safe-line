@@ -56,7 +56,6 @@ const styles = theme => ({
 });
 
 class SignIn extends React.Component {
-
     state = {
         problem: 'Depresie',
         socket: null,
@@ -96,7 +95,7 @@ class SignIn extends React.Component {
                         <h1 style={{
                             fontSize: "100px"
                         }}>💯</h1>
-                        <h2>"Vorbeste cu un psiholog" este primul serviciu roman de asistenta medicala online!</h2>
+                        <h2>"Psihologul" este primul serviciu roman de asistenta medicala online!</h2>
                     </div>
                 ),
             },
@@ -183,7 +182,7 @@ class SignIn extends React.Component {
                         <LocalHospital />
                     </Avatar>
                     <Typography className="hello" component="h1" variant="h5">
-                        Safe-Line
+                        Psihologul
                     </Typography>
                     <form 
                         className={classes.form}

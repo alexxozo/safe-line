@@ -71,7 +71,7 @@ function CustomizedTable(props) {
                 color: row.status === 'In asteptare' ? 'red' : 'green'
               }} align="right">{row.status}</CustomTableCell>
               <CustomTableCell align="right">
-                <Button variant="contained" color="secondary" className={classes.button}>
+                <Button variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
                   Ajuta
                   <LocalHospital />
                 </Button>

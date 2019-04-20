@@ -21,6 +21,20 @@ function createData(name, problem, status) {
     return { id, name, problem, status };
 }
 
+const rows = [
+    createData('🙍‍♂️ Ionel', 'Anxietate', 'In asteptare'),
+    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
+    createData('🙍‍♀️ Maria', 'Anxietate', 'In asteptare'),
+    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
+    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
+    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
+    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
+    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
+    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
+    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
+    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
+];
+
 class Dashboard extends React.Component {
 
     state = {
