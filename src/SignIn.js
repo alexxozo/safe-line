@@ -19,8 +19,8 @@ import Joyride from 'react-joyride';
 
 import axios from 'axios';
 import socketIo from 'socket.io-client';
-const apiUrl = 'http://172.31.241.119:3001';
 
+import { apiUrl } from './config';
 
 const styles = theme => ({
     main: {
@@ -60,7 +60,7 @@ class SignIn extends React.Component {
     state = {
         problem: 'Depresie',
         socket: null,
-        name: 'problem',
+        name: '',
         details: '',
         run: true,
         steps: [
@@ -159,6 +159,7 @@ class SignIn extends React.Component {
     }
 
     handleChange = event => {
+        console.log(this.state);
         this.setState({ [event.target.name]: event.target.value });
     };
 
@@ -190,7 +191,14 @@ class SignIn extends React.Component {
                     >
                         <FormControl className="info" margin="normal" required fullWidth>
                             <InputLabel htmlFor="name">Nume</InputLabel>
-                            <Input id="name" name="name" autoComplete="name" autoFocus />
+                            <Input 
+                                id="name"
+                                value={this.state.name}
+                                onChange={this.handleChange}
+                                inputProps={{
+                                    name: 'name',
+                                }}
+                                autoFocus />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Problema</InputLabel>
