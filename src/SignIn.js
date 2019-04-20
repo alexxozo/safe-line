@@ -17,6 +17,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Joyride from 'react-joyride';
 
+import axios from 'axios';
+import socketIo from 'socket.io-client';
+const apiUrl = 'http://172.31.241.119:3001';
+
+
 const styles = theme => ({
     main: {
         width: 'auto',
@@ -54,7 +59,9 @@ class SignIn extends React.Component {
 
     state = {
         problem: 'Depresie',
+        socket: null,
         name: 'problem',
+        details: '',
         run: true,
         steps: [
             {
@@ -133,6 +140,24 @@ class SignIn extends React.Component {
         ]
     };
 
+    submitForm = event => {
+        event.preventDefault();
+        axios.post(`${apiUrl}/api/patient`, {
+            name: this.state.name,
+            problem: this.state.problem,
+            details: this.state.details,
+        }).then((res) => {
+            console.log(res);
+            // TODO: Add a loading animation.
+            const socket = socketIo(`${apiUrl}/patient`);
+            socket.emit('patientId', res.data.id);
+            socket.on('pairFound', () => {
+                // TODO: Handle trasition to chat service.
+            });
+            this.setState({ socket });
+        }).catch(console.log)
+    }
+
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
@@ -159,7 +184,10 @@ class SignIn extends React.Component {
                     <Typography className="hello" component="h1" variant="h5">
                         Safe-Line
                     </Typography>
-                    <form className={classes.form}>
+                    <form 
+                        className={classes.form}
+                        onSubmit={this.submitForm}
+                    >
                         <FormControl className="info" margin="normal" required fullWidth>
                             <InputLabel htmlFor="name">Nume</InputLabel>
                             <Input id="name" name="name" autoComplete="name" autoFocus />
@@ -181,6 +209,10 @@ class SignIn extends React.Component {
                         <FormControl margin="normal" required fullWidth>
                             <TextField
                                 placeholder="Detalii Suplimentare"
+                                onChange={this.handleChange}
+                                inputProps={{
+                                    name: 'details'
+                                }}
                                 multiline={true}
                                 rows={1}
                                 rowsMax={4}
