@@ -13,28 +13,6 @@ import axios from 'axios';
 import socketIo from 'socket.io-client';
 
 import { apiUrl } from './config';
-
-let id = 0;
-function createData(name, problem, status) {
-    id += 1;
-
-    return { id, name, problem, status };
-}
-
-const rows = [
-    createData('🙍‍♂️ Ionel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♂️ Mihai', 'Depresie', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Anxietate', 'In asteptare'),
-    createData('🙍‍♀️ Maria', 'Depresie', 'In asteptare'),
-    createData('🙍‍♂️ Gabriel', 'Depresie', 'In asteptare'),
-];
-
 class Dashboard extends React.Component {
 
     state = {
