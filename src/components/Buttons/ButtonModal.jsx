@@ -41,7 +41,7 @@ class SimpleModal extends React.Component {
   };
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, description } = this.props;
 
     return (
       <div>
@@ -56,10 +56,7 @@ class SimpleModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="h6" id="modal-title">
-              Text in a modal
-            </Typography>
-            <Typography variant="subtitle1" id="simple-modal-description">
-              Test
+              {description}
             </Typography>
           </div>
         </Modal>

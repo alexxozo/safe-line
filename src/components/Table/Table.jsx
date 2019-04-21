@@ -82,7 +82,7 @@ class CustomizedTable extends React.Component {
                 </CustomTableCell>
                 <CustomTableCell align="right">{row.problem}</CustomTableCell>
                 <CustomTableCell align="right">
-                  <ButtonModal></ButtonModal>
+                  <ButtonModal description={row.details}></ButtonModal>
                 </CustomTableCell>
 
                 <CustomTableCell style={{
