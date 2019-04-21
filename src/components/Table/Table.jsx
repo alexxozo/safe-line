@@ -75,8 +75,14 @@ function CustomizedTable(props) {
               }} align="right">{row.status}</CustomTableCell>
               <CustomTableCell align="right">
                 <Button 
-                  onClick={() => {
-                    axios.post(`${apiUrl}/api/psychologist/patient/${row.id}`);
+                  onClick={async () => {
+                    // Create call room for psychologist.
+                    // Get callback and call api.
+                    try {
+                      await axios.post(`${apiUrl}/api/psychologist/patient/${row.id}`)
+                    } catch (e) {
+                      console.log('Sad :(', e);
+                    }
                   }}
                   variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
                   Ajuta

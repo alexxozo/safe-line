@@ -17,9 +17,10 @@ class Chat extends Component {
         console.log(this.props.location.state.id);
         const { id } = this.props.location.state;
         socket.emit('patientId', id);
-        socket.on('pairFound', () => {
+        socket.on('pairFound', (/*roomId*/) => {
+            // Connect to chat room.
             this.setState({
-                loading: false,
+                loading: false,                
             });
         });
         this.setState({ socket });
