@@ -16,9 +16,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Joyride from 'react-joyride';
+import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
-import socketIo from 'socket.io-client';
 
 import { apiUrl } from './config';
 
@@ -59,6 +59,8 @@ class SignIn extends React.Component {
     state = {
         problem: 'Depresie',
         socket: null,
+        redirect: false,
+        patientId: null,
         name: '',
         details: '',
         run: true,
@@ -146,14 +148,10 @@ class SignIn extends React.Component {
             problem: this.state.problem,
             details: this.state.details,
         }).then((res) => {
-            console.log(res);
-            // TODO: Add a loading animation.
-            const socket = socketIo(`${apiUrl}/patient`);
-            socket.emit('patientId', res.data.id);
-            socket.on('pairFound', () => {
-                // TODO: Handle trasition to chat service.
+            this.setState({ 
+                redirect: true,
+                patientId: res.data.id,
             });
-            this.setState({ socket });
         }).catch(console.log)
     }
 
@@ -163,6 +161,14 @@ class SignIn extends React.Component {
     };
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={{
+                                pathname: '/chat',
+                                state: { id: this.state.patientId },
+                            }}
+                    />
+        }
+
         const { classes } = this.props;
         const { steps, run } = this.state;
 

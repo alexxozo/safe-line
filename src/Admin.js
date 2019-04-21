@@ -29,10 +29,13 @@ class Dashboard extends React.Component {
 
     getPatients = async () => {
         const response = await axios.get(`${apiUrl}/api/patient`);
-        const rows = response.data.map((patient) => ({
-            ...patient,
-            status: 'In asteptare',
-        }));
+        const rows = response.data.map((patient) => {
+            console.log(patient);
+            return({
+                ...patient,
+                status: 'In asteptare',
+            })
+        });
         this.setState({ rows });
     }
 

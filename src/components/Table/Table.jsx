@@ -13,6 +13,9 @@ import ButtonModal from "../Buttons/ButtonModal";
 
 import LocalHospital from '@material-ui/icons/LocalHospital';
 
+import axios from 'axios';
+import { apiUrl } from '../../config';
+
 const CustomTableCell = withStyles(theme => ({
   head: {
     backgroundColor: "#ff3333",
@@ -71,7 +74,11 @@ function CustomizedTable(props) {
                 color: row.status === 'In asteptare' ? 'red' : 'green'
               }} align="right">{row.status}</CustomTableCell>
               <CustomTableCell align="right">
-                <Button variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
+                <Button 
+                  onClick={() => {
+                    axios.post(`${apiUrl}/api/psychologist/patient/${row.id}`);
+                  }}
+                  variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
                   Ajuta
                   <LocalHospital />
                 </Button>
