@@ -12,9 +12,11 @@ import Icon from '@material-ui/core/Icon';
 import ButtonModal from "../Buttons/ButtonModal";
 
 import LocalHospital from '@material-ui/icons/LocalHospital';
+import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 import { apiUrl } from '../../config';
+import { ChatManager } from '../../ChatManager';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -44,61 +46,77 @@ const styles = theme => ({
   },
 });
 
-function CustomizedTable(props) {
-  const { classes, children } = props;
+class CustomizedTable extends React.Component {
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <CustomTableCell>Nume</CustomTableCell>
-            <CustomTableCell align="right">Problema</CustomTableCell>
-            <CustomTableCell align="right">Descriere</CustomTableCell>
-            <CustomTableCell align="right">Status</CustomTableCell>
-            <CustomTableCell align="right">Ajuta</CustomTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {children.map(row => (
-            <TableRow className={classes.row} key={row.id}>
-              <CustomTableCell component="th" scope="row">
-                {row.name}
-              </CustomTableCell>
-              <CustomTableCell align="right">{row.problem}</CustomTableCell>
-              <CustomTableCell align="right">
-                <ButtonModal></ButtonModal>
-              </CustomTableCell>
+  state = {};
 
-              <CustomTableCell style={{
-                color: row.status === 'In asteptare' ? 'red' : 'green'
-              }} align="right">{row.status}</CustomTableCell>
-              <CustomTableCell align="right">
-                <Button 
-                  onClick={async () => {
-                    // Create call room for psychologist.
-                    // Get callback and call api.
-                    try {
-                      await axios.post(`${apiUrl}/api/psychologist/patient/${row.id}`)
-                    } catch (e) {
-                      console.log('Sad :(', e);
-                    }
-                  }}
-                  variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
-                  Ajuta
-                  <LocalHospital />
-                </Button>
-              </CustomTableCell>
+
+  render(){
+    const { classes, children } = this.props;
+
+    if (this.state.redirect) {
+        return <Redirect to={{
+                            pathname: '/chatAdmin',
+                            state: { patientId: this.state.patientId },
+                        }}
+                />
+    }
+
+    return (
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <CustomTableCell>Nume</CustomTableCell>
+              <CustomTableCell align="right">Problema</CustomTableCell>
+              <CustomTableCell align="right">Descriere</CustomTableCell>
+              <CustomTableCell align="right">Status</CustomTableCell>
+              <CustomTableCell align="right">Ajuta</CustomTableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
-}
+          </TableHead>
+          <TableBody>
+            {children.map(row => (
+              <TableRow className={classes.row} key={row.id}>
+                <CustomTableCell component="th" scope="row">
+                  {row.name}
+                </CustomTableCell>
+                <CustomTableCell align="right">{row.problem}</CustomTableCell>
+                <CustomTableCell align="right">
+                  <ButtonModal></ButtonModal>
+                </CustomTableCell>
 
-CustomizedTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+                <CustomTableCell style={{
+                  color: row.status === 'In asteptare' ? 'red' : 'green'
+                }} align="right">{row.status}</CustomTableCell>
+                <CustomTableCell align="right">
+                  <Button 
+                    onClick={() => {
+                      let psychologistId = 'sixinchesunbuffed_psiholog';
+                      let chatManager = window.chatManager = window.chatManager || new ChatManager(psychologistId);
+                      chatManager.onOpen = async () => {
+                        try {
+                          await axios.post(`${apiUrl}/api/psychologist/patient/${row.id}/${psychologistId}`);
+                          this.setState({
+                            patientId: `sixinchesunbuffed_${row.id}`,
+                            redirect: true
+                          });
+                        } catch (e) {
+                          console.log('Sad :(', e);
+                        }
+                      };
+                    }}
+                    variant="contained" style={{ background: "#ff3333", color: "white", fontWeight: "bold" }} className={classes.button}>
+                    Ajuta
+                    <LocalHospital />
+                  </Button>
+                </CustomTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
+}
 
 export default withStyles(styles)(CustomizedTable);
