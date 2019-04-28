@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import './MessageList.css';
 
-const MY_USER_ID = 'apple';
+const MY_USER_ID = 'me';
 
 export default class MessageList extends Component {
   constructor(props) {
@@ -16,80 +16,14 @@ export default class MessageList extends Component {
       inputText: '',
       messages: [],
     };
+    
+    this.receiveMessage = this.receiveMessage.bind(this);
   }
 
-  componentDidMount() {
-    this.getMessages();
-  }
-
-  getMessages = () => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        messages: [
-          {
-            id: 1,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 2,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 3,
-            author: 'orange',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 4,
-            author: 'apple',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 5,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 6,
-            author: 'apple',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 7,
-            author: 'orange',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 8,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 9,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 10,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-        ]
-      };
-    });
+  componentDidMount(){
+    window.addEventListener('message-received', (e) => {
+      this.receiveMessage(e.message);
+    }, false);
   }
 
   renderMessages() {
@@ -153,12 +87,33 @@ export default class MessageList extends Component {
 
   addMessage = (event) => {
     this.setState(prevState => {
+
+      window.chatManager.send(prevState.inputText);
+
       return {
         ...prevState,
-        messages: [...prevState.messages, "a"]
+        messages: [...prevState.messages, {
+          author: 'me',
+          message: prevState.inputText,
+          timestamp: new Date().getTime()
+        }],
+        inputText: ""
       }
     });
   };
+
+  receiveMessage = (message) => {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        messages: [...prevState.messages, {
+          author: 'other',
+          message: message,
+          timestamp: new Date().getTime()
+        }]
+      }
+    });
+  }
 
   updateInput = (event) => {
     this.setState({

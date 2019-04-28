@@ -17,7 +17,7 @@ class Dashboard extends React.Component {
 
     state = {
         rows: [],
-        socket: null,
+        socket: null
     };
 
     async componentDidMount() {
@@ -40,6 +40,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
+
         return (
             <div>
                 <AppBar></AppBar>

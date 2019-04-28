@@ -4,66 +4,44 @@ import MessageList from './components/MessageList/index';
 
 import socketIo from 'socket.io-client';
 import { apiUrl } from './config';
-import { ChatManager } from './ChatManager';
 
-class Chat extends Component {
+class ChatAdmin extends Component {
 
     state = {
         loading: true,
-        socket: null,
         chatManager: null
     };
 
-    componentWillMount() {
-        const socket = socketIo(`${apiUrl}/patient`);
-        
-        const { id } = this.props.location.state;
-        socket.emit('patientId', id);
-        socket.on('pairFound', (psychologistId) => {
+    componentDidMount() {
 
-            let chatManager = window.chatManager = new ChatManager(`sixinchesunbuffed_${id}`);
+        let chatManager = window.chatManager;
+        console.log(this.props.location.state);
+        chatManager.connect(this.props.location.state.patientId);
 
-            chatManager.onOpen = () => {
+        chatManager.onRemoteStreamConnected = (stream) => {
+            document.getElementById("remote-stream").srcObject = stream;
+        };
 
-                chatManager.connect(psychologistId);
-                chatManager.call({ 
-                    video: true, 
-                    audio: true 
-                });
+        chatManager.onLocalStreamConnected = (stream) => {
+            document.getElementById("local-stream").srcObject = stream;
+        };
 
-                chatManager.onRemoteStreamConnected = (stream) => {
-                    document.getElementById("remote-stream").srcObject = stream;
-                };
+        chatManager.onDataReceived = (message) => {
+            console.log(message);
+            let event = new Event('message-received');
+            event.message = message;
 
-                chatManager.onLocalStreamConnected = (stream) => {
-                    document.getElementById("local-stream").srcObject = stream;
-                };
+            window.dispatchEvent(event);
+        };
 
-                chatManager.onDataReceived = (message) => {
-                    console.log(message);
-                    let event = new Event('message-received');
-                    event.message = message;
-
-                    window.dispatchEvent(event);
-                };
-
-                this.setState({
-                    chatManager,
-                    loading: false,                
-                });
-            };
+        this.setState({
+            chatManager,
+            loading: false           
         });
-        this.setState({ socket });
     }
 
     render() {
         const { loading } = this.state;
-
-        // setTimeout(() => {
-        //     this.setState({
-        //         loading: false,
-        //     })
-        // }, 1000);
 
         return (
             <LoadingScreen
@@ -110,4 +88,4 @@ class Chat extends Component {
     }
 }
 
-export default Chat;
+export default ChatAdmin;
